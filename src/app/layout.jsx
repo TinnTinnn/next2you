@@ -9,7 +9,10 @@ export default function RootLayout({children}) {
         <header>
             <nav>
                 <Link className="nav-link" href="/">Home</Link>
-                <Link className="nav-link" href="/dashboard">Dashboard</Link>
+                <div>
+                    <Link className="nav-link" href="/register">Register</Link>
+                    <Link className="nav-link" href="/dashboard">Dashboard</Link>
+                </div>
             </nav>
         </header>
 
