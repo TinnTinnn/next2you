@@ -4,6 +4,7 @@ import bcrypt  from 'bcrypt'
 import {RegisterFormSchema} from "@/lib/rules";
 import {getCollection} from "@/lib/db";
 import {redirect} from "next/navigation";
+import {createSession} from "@/lib/session";
 
 export async function register(formData) {
 
@@ -47,7 +48,7 @@ export async function register(formData) {
     });
 
     // Create a session
-    
+    await createSession(results.insertedId)
 
     // Redirect
     redirect("/dashboard");
