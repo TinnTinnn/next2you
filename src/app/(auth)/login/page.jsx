@@ -1,10 +1,11 @@
 "use client"
+
 import Link from "next/link";
-import {register} from "@/actions/auth";
+import {login} from "@/actions/auth";
 import {useState} from "react";
 
 
-export default function Register() {
+export default function Login() {
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
@@ -12,7 +13,7 @@ export default function Register() {
         setIsLoading(true);
         setErrors({}); // รีเซ็ต errors ก่อน submit
         try {
-            const result = await register(formData);
+            const result = await login(formData);
             // ตรวจสอบว่า result มี errors หรือไม่อย่างปลอดภัย
             if (result && result.errors) {
                 setErrors(result.errors);
@@ -25,7 +26,7 @@ export default function Register() {
     }
     return (
         <div className="container w-1/2">
-            <h1 className="title">Register</h1>
+            <h1 className="title">Login</h1>
 
             <form action={handleSubmit} className="space-y-4">
                 <div>
@@ -37,22 +38,7 @@ export default function Register() {
                 <div>
                     <label htmlFor="password">Password</label>
                     <input type="password" name="password" />
-                    {errors.password && errors.password.length > 0 && (
-                        <div className="error">
-                            <p>Password must:</p>
-                            <ul className="list-disc list-inside ml-4 text-red-500">
-                                {errors.password.map((err, index) => (
-                                    <li key={index}>{err}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-
-                <div>
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input type="password" name="confirmPassword"/>
-                    {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
+                    {errors.password && <p className="text-red-500">{errors.password}</p>}
                 </div>
 
                 <div className="flex items-end gap-4">
@@ -87,13 +73,14 @@ export default function Register() {
                                 Loading...
                             </span>
                         ) : (
-                            "Register"
+                            "Login"
                         )}
                     </button>
 
-                    <Link href="/login" className="text-link">or login here</Link>
+                    <Link href="/register" className="text-link">or register here</Link>
                 </div>
             </form>
         </div>
     )
 }
+
