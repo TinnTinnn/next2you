@@ -1,7 +1,9 @@
+import "server-only"
+
 import {jwtVerify, SignJWT} from "jose";
 import {cookies} from "next/headers";
 
-const secretKey = process.env.SESSSION_SECRET
+const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload) {
