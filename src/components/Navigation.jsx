@@ -1,5 +1,6 @@
 import NavLink from "@/components/NavLink";
 import getAuthUser from "@/lib/getAuthUser";
+import {logout} from "@/actions/auth";
 
 export default async function Navigation({}) {
     const authUser = await getAuthUser();
@@ -13,6 +14,9 @@ export default async function Navigation({}) {
                 (
                     <div className="flex items-center">
                         <NavLink label="Dashboard" href="/dashboard"/>
+                        <form action={logout}>
+                            <button className="nav-link">Logout</button>
+                        </form>
                     </div>
                 )
                 :
