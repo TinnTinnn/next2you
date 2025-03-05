@@ -1,4 +1,4 @@
-import {z} from "zod";
+import {string, z} from "zod";
 
 export const LoginFormSchema = z.object({
     email: z.string().email({message: 'Please enter a valid email.'}).trim(),
@@ -28,3 +28,14 @@ export const RegisterFormSchema = z.object({
     }
 })
 
+
+export const MemberSchema = z.object({
+    name: string()
+        .min(1, {message: "Name filed is required."})
+        .max(100,{message: "Name Cant' be more than 100 characters."})
+        .trim(),
+
+    address: string()
+        .min(1, {message: "Address filed is required."})
+        .trim(),
+})
