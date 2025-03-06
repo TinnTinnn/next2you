@@ -45,3 +45,70 @@ export async function createMember(formData){
 
     redirect("/dashboard")
 }
+
+export async function updateMember(formData,id) {
+    // Check if user is signed in
+    const user = await getAuthUser();
+    if (!user || !user.userId) return redirect("/");
+
+    // Validate form fields
+    const validatedFields = MemberSchema.safeParse({
+        name: formData.get("name"),
+        address: formData.get("address"),
+    });
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            name: formData.get("name"),
+            address: formData.get("address"),
+        };
+    }
+
+    // Get the members collection
+    const membersCollection = await getCollection("members");
+    if (!membersCollection) {
+        return { errors: { server: "Server error!" } };
+    }
+
+    // Find the member by ID
+    console.log("Attempting to find member with ID:", id); // Debug ID
+    const member = await membersCollection.findOne({
+        _id: ObjectId.createFromHexString(id),
+    });
+
+    // If member not found, redirect with log
+    if (!member) {
+        console.log("Member not found for ID:", id);
+        return redirect("/");
+    }
+
+    // Check ownership with safety for createdBy
+    console.log("Member found:", member); // Debug member data
+    if (!member.userId || member.userId.toString() !== user.userId) {
+        console.log("User not authorized. User ID:", user.userId, "Member createdBy:", member.userId);
+        return { errors: { server: "You are not authorized to edit this member" } };
+    }
+
+    // Update the member
+    await membersCollection.findOneAndUpdate(
+        { _id: member._id },
+        {
+            $set: {
+                name: validatedFields.data.name,
+                address: validatedFields.data.address,
+                updatedAt: new Date(),
+            },
+        }
+    );
+
+    // Log successful update
+    console.log("Member updated:", {
+        _id: id,
+        name: validatedFields.data.name,
+        address: validatedFields.data.address,
+    });
+
+    // Redirect to dashboard
+    redirect("/dashboard");
+}
