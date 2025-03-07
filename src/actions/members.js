@@ -5,6 +5,7 @@ import {MemberSchema} from "@/lib/rules";
 import {getCollection} from "@/lib/db";
 import getAuthUser from "@/lib/getAuthUser";
 import {ObjectId} from "mongodb";
+import {revalidatePath} from "next/cache";
 
 export async function createMember(formData){
 
@@ -111,4 +112,24 @@ export async function updateMember(formData,id) {
 
     // Redirect to dashboard
     redirect("/dashboard");
+}
+
+export async function deleteMember(formData) {
+    // Check is user is signed in
+    const user = await getAuthUser()
+    if (!user) return redirect('/login')
+
+    // Find the member
+    const membersCollection = await getCollection('members')
+    const member = await membersCollection.findOne({
+        _id: ObjectId.createFromHexString(formData.get("memberId"))
+    })
+
+    // Check the auth user owns the member
+    if (user.userId !== member.userId.toString()) return redirect("/");
+
+    // Delete the member
+    membersCollection.findOneAndDelete({_id: member._id})
+
+    revalidatePath('/dashboard')
 }
