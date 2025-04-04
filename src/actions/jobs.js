@@ -16,10 +16,36 @@ export async function createJob(formData){
     // Validate form fields
     const title = formData.get("title")
     const position = formData.get("position")
+    const gender = formData.get("gender") || "Unspecified"
+    const genre = formData.get("genre") || ""
+    const date = formData.get("date") || ""
+    const startTime = formData.get("startTime") || ""
+    const endTime = formData.get("endTime") || ""
+    const hasBreak = formData.get("hasBreak") === "on"
+    const breakCount = parseInt(formData.get("breakCount") || "0")
+    const breakDuration = parseInt(formData.get("breakDuration") || "0")
+    const rate = parseInt(formData.get("rate") || "0")
+    const place = formData.get("place") || ""
+    const location = formData.get("location") || ""
+    const welfare = formData.get("welfare") || ""
+    const customPosition = position === "Other" ? formData.get("customPosition") || "" : ""
 
     const validatedFields = JobSchema.safeParse({
         title,
         position,
+        gender,
+        genre,
+        date,
+        startTime,
+        endTime,
+        hasBreak,
+        breakCount,
+        breakDuration,
+        rate,
+        place,
+        location,
+        welfare,
+        customPosition
     })
 
     // If any form fields are invalid
@@ -35,7 +61,21 @@ export async function createJob(formData){
         const job = {
             title: validatedFields.data.title,
             position: validatedFields.data.position,
-            userId: ObjectId.createFromHexString(user.userId)
+            gender: validatedFields.data.gender,
+            genre: validatedFields.data.genre,
+            date: validatedFields.data.date,
+            startTime: validatedFields.data.startTime,
+            endTime: validatedFields.data.endTime,
+            hasBreak: validatedFields.data.hasBreak,
+            breakCount: validatedFields.data.breakCount,
+            breakDuration: validatedFields.data.breakDuration,
+            rate: validatedFields.data.rate,
+            place: validatedFields.data.place,
+            location: validatedFields.data.location,
+            welfare: validatedFields.data.welfare,
+            customPosition: validatedFields.data.customPosition,
+            userId: ObjectId.createFromHexString(user.userId),
+            createdAt: new Date()
         }
         await jobsCollection.insertOne(job)
     } catch (error) {
@@ -53,16 +93,58 @@ export async function updateJob(formData,id) {
     if (!user || !user.userId) return redirect("/");
 
     // Validate form fields
+    const title = formData.get("title")
+    const position = formData.get("position")
+    const gender = formData.get("gender") || "Unspecified"
+    const genre = formData.get("genre") || ""
+    const date = formData.get("date") || ""
+    const startTime = formData.get("startTime") || ""
+    const endTime = formData.get("endTime") || ""
+    const hasBreak = formData.get("hasBreak") === "on"
+    const breakCount = parseInt(formData.get("breakCount") || "0")
+    const breakDuration = parseInt(formData.get("breakDuration") || "0")
+    const rate = parseInt(formData.get("rate") || "0")
+    const place = formData.get("place") || ""
+    const location = formData.get("location") || ""
+    const welfare = formData.get("welfare") || ""
+    const customPosition = position === "Other" ? formData.get("customPosition") || "" : ""
+
     const validatedFields = JobSchema.safeParse({
-        title: formData.get("title"),
-        position: formData.get("position"),
+        title,
+        position,
+        gender,
+        genre,
+        date,
+        startTime,
+        endTime,
+        hasBreak,
+        breakCount,
+        breakDuration,
+        rate,
+        place,
+        location,
+        welfare,
+        customPosition
     });
 
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            title: formData.get("title"),
-            position: formData.get("position"),
+            title,
+            position,
+            gender,
+            genre,
+            date,
+            startTime,
+            endTime,
+            hasBreak,
+            breakCount,
+            breakDuration,
+            rate,
+            place,
+            location,
+            welfare,
+            customPosition
         };
     }
 
@@ -98,6 +180,19 @@ export async function updateJob(formData,id) {
             $set: {
                 title: validatedFields.data.title,
                 position: validatedFields.data.position,
+                gender: validatedFields.data.gender,
+                genre: validatedFields.data.genre,
+                date: validatedFields.data.date,
+                startTime: validatedFields.data.startTime,
+                endTime: validatedFields.data.endTime,
+                hasBreak: validatedFields.data.hasBreak,
+                breakCount: validatedFields.data.breakCount,
+                breakDuration: validatedFields.data.breakDuration,
+                rate: validatedFields.data.rate,
+                place: validatedFields.data.place,
+                location: validatedFields.data.location,
+                welfare: validatedFields.data.welfare,
+                customPosition: validatedFields.data.customPosition,
                 updatedAt: new Date(),
             },
         }
