@@ -35,7 +35,7 @@ export const JobSchema = z.object({
         .max(100,{message: "Title can't be more than 100 characters."})
         .trim(),
 
-    address: string()
-        .min(1, {message: "Address filed is required."})
+    position: string()
+        .min(1, {message: "position filed is required."})
         .trim(),
 })

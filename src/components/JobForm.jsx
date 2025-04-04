@@ -47,14 +47,14 @@ export default function JobForm({job}) {
                     </div>
 
                     <div>
-                        <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                        <label htmlFor="position" className="block text-sm font-medium text-gray-700">position</label>
                         <Textarea
-                            name="address"
+                            name="position"
                             rows="3"
-                            defaultValue={job?.address || ""}
+                            defaultValue={job?.position || ""}
                             className="mt-1 w-full"
                         />
-                        {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
+                        {errors.position && <p className="text-red-500 text-sm">{errors.position}</p>}
                     </div>
 
                     <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md">

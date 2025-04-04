@@ -15,11 +15,11 @@ export async function createJob(formData){
 
     // Validate form fields
     const title = formData.get("title")
-    const address = formData.get("address")
+    const position = formData.get("position")
 
     const validatedFields = JobSchema.safeParse({
         title,
-        address,
+        position,
     })
 
     // If any form fields are invalid
@@ -34,7 +34,7 @@ export async function createJob(formData){
         const jobsCollection = await getCollection('jobs')
         const job = {
             title: validatedFields.data.title,
-            address: validatedFields.data.address,
+            position: validatedFields.data.position,
             userId: ObjectId.createFromHexString(user.userId)
         }
         await jobsCollection.insertOne(job)
@@ -55,14 +55,14 @@ export async function updateJob(formData,id) {
     // Validate form fields
     const validatedFields = JobSchema.safeParse({
         title: formData.get("title"),
-        address: formData.get("address"),
+        position: formData.get("position"),
     });
 
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             title: formData.get("title"),
-            address: formData.get("address"),
+            position: formData.get("position"),
         };
     }
 
@@ -97,7 +97,7 @@ export async function updateJob(formData,id) {
         {
             $set: {
                 title: validatedFields.data.title,
-                address: validatedFields.data.address,
+                position: validatedFields.data.position,
                 updatedAt: new Date(),
             },
         }
@@ -107,7 +107,7 @@ export async function updateJob(formData,id) {
     console.log("Job updated:", {
         _id: id,
         title: validatedFields.data.title,
-        address: validatedFields.data.address,
+        position: validatedFields.data.position,
     });
 
     // Redirect to dashboard

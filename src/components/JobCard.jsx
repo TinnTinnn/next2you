@@ -10,7 +10,7 @@ export default function  JobCard ({job}) {
                   className="block text-xl font-semibold mb-4">
                 {job.title}
             </Link>
-            <p className="text-sm">{job.address}</p>
+            <p className="text-sm">{job.position}</p>
         </div>
     )
 }
