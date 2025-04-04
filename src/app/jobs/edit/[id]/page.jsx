@@ -1,4 +1,4 @@
-import MemberForm from "@/components/MemberForm";
+import JobForm from "@/components/JobForm";
 import {getCollection} from "@/lib/db";
 import {ObjectId} from "mongodb";
 import getAuthUser from "@/lib/getAuthUser";
@@ -10,25 +10,25 @@ export default async function Edit({ params }) {
     // Get the auth user from cookies
     const user = await getAuthUser()
 
-    const membersCollection = await getCollection("members");
-    let member = null;
-    if (id.length === 24 && membersCollection) {
-       member = await membersCollection.findOne({
+    const jobsCollection = await getCollection("jobs");
+    let job = null;
+    if (id.length === 24 && jobsCollection) {
+       job = await jobsCollection.findOne({
             _id: ObjectId.createFromHexString(id)
         })
-        if (member) {
-            member = JSON.parse(JSON.stringify(member));
+        if (job) {
+            job = JSON.parse(JSON.stringify(job));
         }
     }
 
-    console.log("Fetched member:", member);
+    console.log("Fetched job:", job);
     return (
         <div className="container w-1/2">
             <h1 className="title">
-                Edit your member
+                Edit your job
             </h1>
-            {member ? (
-                <MemberForm member={member}/>
+            {job ? (
+                <JobForm job={job}/>
             ) : (
                 <p>Failed to fetch the data</p>
             )}

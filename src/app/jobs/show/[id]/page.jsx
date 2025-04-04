@@ -1,19 +1,19 @@
 import {ObjectId} from "mongodb";
 import {getCollection} from "@/lib/db";
-import MemberCard from "@/components/MemberCard";
+import JobCard from "@/components/JobCard";
 
 export default async function Show({params}) {
     const {id} = await params
 
-    const membersCollection = await getCollection('members')
-    const member = id.length === 24 ? await membersCollection?.findOne({
+    const jobsCollection = await getCollection('jobs')
+    const job = id.length === 24 ? await jobsCollection?.findOne({
         _id: ObjectId.createFromHexString(id)
     }) : null;
 
     return (
         <div className="container w-1/2">
-            { member ?
-                <MemberCard member={member}/>
+            { job ?
+                <JobCard job={job}/>
             : <p>Failed to fetch the data</p>
             }
         </div>

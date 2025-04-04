@@ -29,10 +29,10 @@ export const RegisterFormSchema = z.object({
 })
 
 
-export const MemberSchema = z.object({
-    name: string()
-        .min(1, {message: "Name filed is required."})
-        .max(100,{message: "Name Cant' be more than 100 characters."})
+export const JobSchema = z.object({
+    title: string()
+        .min(1, {message: "Title field is required."})
+        .max(100,{message: "Title can't be more than 100 characters."})
         .trim(),
 
     address: string()

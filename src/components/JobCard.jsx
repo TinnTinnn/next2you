@@ -1,16 +1,16 @@
 import Link from "next/link";
 
-export default function  MemberCard ({member}) {
+export default function  JobCard ({job}) {
     return (
         <div className="border border-slate-400 border-dashed p-4 rounded-md h-full bg-white">
             <p className="text-slate-600 text-xs">
-                {member._id.getTimestamp().toLocaleString()}
+                {job._id.getTimestamp().toLocaleString()}
             </p>
-            <Link href={`/members/show/${member._id.toString()}`}
+            <Link href={`/jobs/show/${job._id.toString()}`}
                   className="block text-xl font-semibold mb-4">
-                {member.name}
+                {job.title}
             </Link>
-            <p className="text-sm">{member.address}</p>
+            <p className="text-sm">{job.address}</p>
         </div>
     )
 }

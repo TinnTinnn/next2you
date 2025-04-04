@@ -1,25 +1,27 @@
 "use client"
 
 import {useState} from "react";
-import {createMember, updateMember} from "@/actions/members";
+import {createJob, updateJob} from "@/actions/jobs";
 import {Card, CardContent} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Textarea} from "@/components/ui/textarea";
 
 
-export default function MemberForm({member}) {
+export default function JobForm({job}) {
 
     const [errors, setErrors] = useState({});
 
-    async function handleFormSubmit(formData) {
+    async function handleFormSubmit(event) {
+        event.preventDefault();
         setErrors({})
 
         try {
-            console.log("Submitting form for member:", member);
-            const result = member
-                ? await updateMember(formData, member._id) // edit case
-                : await createMember(formData); // create case
+            console.log("Submitting form for job:", job);
+            const formData = new FormData(event.target);
+            const result = job
+                ? await updateJob(formData, job._id) // edit case
+                : await createJob(formData); // create case
             if (result && result.errors) {
                 setErrors(result.errors);
             }
@@ -34,14 +36,14 @@ export default function MemberForm({member}) {
             <CardContent>
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
                         <Input
                             type="text"
-                            name="name"
-                            defaultValue={member?.name || ""}
+                            name="title"
+                            defaultValue={job?.title || ""}
                             className="mt-1 w-full"
                         />
-                        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
                     </div>
 
                     <div>
@@ -49,14 +51,14 @@ export default function MemberForm({member}) {
                         <Textarea
                             name="address"
                             rows="3"
-                            defaultValue={member?.address || ""}
+                            defaultValue={job?.address || ""}
                             className="mt-1 w-full"
                         />
                         {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
                     </div>
 
                     <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md">
-                        {member ? "Update" : "Submit"}
+                        {job ? "Update" : "Submit"}
                     </Button>
                 </form>
             </CardContent>
